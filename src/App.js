@@ -17,7 +17,7 @@ export default class App extends React.Component {
     console.log(cardDeck);
     this.state = {
       cardDeck,
-      shuffledCards:cardDeck
+      shuffledCards:[]
     }; 
     
   }
@@ -33,12 +33,28 @@ export default class App extends React.Component {
     return arr;
     
   };
-  
+  drawCards = () => {
+let shuffledcards = this.state.shuffledcards;
+   const item = shuffledcards[Math.floor(Math.random()*shuffledcards.length)];
+   
+    const newCards= shuffledcards.filter(element => element.index !== item.index)
+   
+        this.setState({ shuffledcards: newCards })
+let cardsSelected = this.state.cardDrawn;
+  cardsSelected.length < 52 &&
+    cardsSelected.push(item);
+
+
+    this.setState({ cardDrawn: cardsSelected })
+
+    console.log(this.state.cardDrawn);
+  };
   render() {
   
     return (  
       <div>
         <button onClick={() => this.shuffleCards(this.state.cardDeck)}>Shuffle</button>
+         <button onClick={() => this.drawCards()}>Draw a Card</button>
         <div>
         {
         this.state.cardDeck.map((card, index) => {
@@ -48,6 +64,15 @@ export default class App extends React.Component {
               </li>
             );
           })}
+        {
+        this.state.cardDrawn.map((item)=>{
+          return(
+            <li>
+              <span>{item}</span>
+            </li>
+          )
+        })
+      }
         </div>
       </div>
     );
